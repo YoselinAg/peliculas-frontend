@@ -31,8 +31,14 @@
 
             <div class="field">
                 <label for="paisNacimiento">País de nacimiento</label>
-                <input type="text" th:field="*{paisNacimiento}" maxlength="100" required
-                       th:aria-invalid="${#fields.hasErrors('paisNacimiento')}" aria-describedby="pais-error">
+                <select th:field="*{paisNacimiento}" required
+                        th:aria-invalid="${#fields.hasErrors('paisNacimiento')}"
+                        aria-describedby="pais-anterior pais-error">
+                    <option value="">Selecciona un país</option>
+                    <option th:each="pais : ${paisesNacimiento}" th:value="${pais}" th:text="${pais}"></option>
+                </select>
+                <div id="pais-anterior"><p class="muted" th:if="${paisAnterior}"
+                    th:text="|Valor anterior: ${paisAnterior}. Selecciona un país de la lista.|"></p></div>
                 <div id="pais-error"><p class="field-error" th:errors="*{paisNacimiento}"></p></div>
             </div>
 

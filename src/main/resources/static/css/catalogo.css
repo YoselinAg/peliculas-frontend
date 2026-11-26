@@ -17,7 +17,7 @@
 * { box-sizing: border-box; }
 body { margin: 0; min-height: 100vh; }
 a { color: var(--purple); }
-button, input { font: inherit; }
+button, input, select { font: inherit; }
 :focus-visible { outline: 3px solid #9563dc; outline-offset: 3px; }
 .skip { position: fixed; z-index: 1; top: .5rem; left: .5rem; padding: .75rem; background: white; transform: translateY(-150%); }
 .skip:focus { transform: none; }
@@ -134,7 +134,7 @@ h2 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: normal; }
 }
 .field { display: grid; gap: .4rem; }
 .field label { font-weight: bold; font-size: .9rem; }
-.field input {
+.field input, .actor-editor-form .field select {
     width: 100%;
     min-width: 0;
     min-height: 2.75rem;
@@ -144,7 +144,7 @@ h2 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: normal; }
     background: #fff;
     color: var(--ink);
 }
-.field input[aria-invalid="true"] { border-color: var(--danger); }
+.field input[aria-invalid="true"], .field select[aria-invalid="true"] { border-color: var(--danger); }
 .field-error { color: var(--danger); font-size: .95rem; }
 .field div:empty { display: none; }
 .actions, .row-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; }
@@ -223,10 +223,19 @@ tbody tr:hover { background: #f7f4fb; }
     padding: clamp(1.25rem, 5vw, 2.75rem);
 }
 .actor-editor-wide { grid-column: 1 / -1; }
-.actor-editor-form .field input {
+.actor-editor-form .field input, .actor-editor-form .field select {
     min-height: 3.15rem;
     border-radius: .7rem;
     background: #faf7fd;
+}
+.actor-editor-form .field select {
+    appearance: none;
+    padding-right: 2rem;
+    background-image: linear-gradient(45deg, transparent 50%, var(--purple) 50%),
+        linear-gradient(135deg, var(--purple) 50%, transparent 50%);
+    background-position: right 1rem center, right .7rem center;
+    background-size: .3rem .3rem;
+    background-repeat: no-repeat;
 }
 .actor-editor-actions {
     justify-content: flex-end;

@@ -11,6 +11,8 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 class ActorControlador {
     private static final String LISTADO = "redirect:/actores";
@@ -20,6 +22,11 @@ class ActorControlador {
 
     ActorControlador(ActorCliente cliente) {
         this.cliente = cliente;
+    }
+
+    @ModelAttribute("paisesNacimiento")
+    List<String> paisesNacimiento() {
+        return PaisesNacimiento.NOMBRES;
     }
 
     @GetMapping("/")
@@ -48,8 +55,12 @@ class ActorControlador {
 
     @GetMapping("/actores/{id}/editar")
     String editar(@PathVariable("id") long id, Model model) {
+        ActorFicha actor = cliente.consultar(id);
         model.addAttribute("actorId", id);
-        model.addAttribute("actorFormulario", ActorFormulario.desde(cliente.consultar(id)));
+        model.addAttribute("actorFormulario", ActorFormulario.desde(actor));
+        if (!PaisesNacimiento.NOMBRES.contains(actor.paisNacimiento())) {
+            model.addAttribute("paisAnterior", actor.paisNacimiento());
+        }
         return FORMULARIO;
     }
 
@@ -70,6 +81,11 @@ class ActorControlador {
     private String guardar(Long id, ActorFormulario datos, BindingResult validacion,
                            Model model, RedirectAttributes redirect) {
         if (validacion.hasErrors()) {
+            return FORMULARIO;
+        }
+        if (!PaisesNacimiento.NOMBRES.contains(datos.paisNacimiento())) {
+            validacion.rejectValue("paisNacimiento", "paisNacimiento.invalido",
+                    "Selecciona un país de la lista.");
             return FORMULARIO;
         }
 
