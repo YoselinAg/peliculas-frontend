@@ -317,7 +317,16 @@ tbody tr:hover { background: #f7f4fb; }
 }
 .actor-editor-form textarea { resize: vertical; }
 .movie-title { color: inherit; text-decoration: none; }
-.movie-title:hover { color: var(--purple); text-decoration: underline; }
+.movie-title:hover, .movie-title:focus-visible { color: var(--purple); }
+.movie-card:has(.movie-title:is(:hover, :focus-visible)) {
+    border-color: #d7c3f1;
+    box-shadow: 0 .5rem 1.25rem #21172f17;
+}
+@media (prefers-reduced-motion: no-preference) {
+    .movie-card { transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease; }
+    .movie-card:has(.movie-title:is(:hover, :focus-visible)) { transform: translateY(-3px); }
+    .movie-card:has(.movie-title:active) { transform: translateY(-1px); }
+}
 .movie-detail-header {
     display: grid;
     grid-template-columns: clamp(4rem, 18vw, 8rem) minmax(0, 1fr);
