@@ -52,6 +52,7 @@ button, input, select, textarea { font: inherit; }
     font: bold .92rem system-ui, sans-serif;
 }
 .rail nav { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: 3rem; }
+.rail-copyright { display: block; margin-top: 1.25rem; color: #d9cce5; font-size: .8125rem; }
 .nav-item {
     display: block;
     flex-basis: 100%;
@@ -442,6 +443,8 @@ tbody tr:hover { background: #f7f4fb; }
 @media (max-width: 48rem) {
     .rail { position: static; width: auto; display: flex; align-items: center; justify-content: space-between; gap: .6rem; padding: .7rem 1rem; }
     .rail nav { justify-content: flex-end; margin: 0; }
+    .rail { flex-wrap: wrap; }
+    .rail-copyright { flex-basis: 100%; margin-top: 0; }
     .nav-item { flex-basis: auto; padding: .6rem; }
     .brand { font-size: 1.13rem; }
     .main { margin: 0; }
