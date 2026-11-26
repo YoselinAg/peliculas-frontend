@@ -29,7 +29,7 @@
 
     <div class="results-heading">
         <h2 th:text="${filtrado ? 'Resultados de búsqueda' : 'Directorio'}">Directorio</h2>
-        <span class="count" th:text="${actores.size() == 1 ? '1 actor' : actores.size() + ' actores'}"></span>
+        <span class="count" th:text="${totalActores == 1 ? '1 actor' : totalActores + ' actores'}"></span>
     </div>
 
     <div class="table-wrap" th:unless="${actores.isEmpty()}">
@@ -49,14 +49,30 @@
                 <td th:text="${actor.paisNacimiento}"></td>
                 <td>
                     <div class="row-actions">
-                        <a th:href="@{/actores/{id}/editar(id=${actor.id})}" th:aria-label="|Editar a ${actor.nombre}|">Editar</a>
-                        <a class="delete-link" th:href="@{/actores/{id}/eliminar(id=${actor.id})}" th:aria-label="|Eliminar a ${actor.nombre}|">Eliminar</a>
+                        <a class="row-action" th:href="@{/actores/{id}/editar(id=${actor.id})}" th:aria-label="|Editar a ${actor.nombre}|">
+                            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m14 6 4 4M4 20l4-.8 12-12a1.4 1.4 0 0 0 0-2l-2-2a1.4 1.4 0 0 0-2 0l-12 12L4 20Z"/></svg>
+                            Editar
+                        </a>
+                        <a class="row-action row-action-delete" th:href="@{/actores/{id}/eliminar(id=${actor.id})}" th:aria-label="|Eliminar a ${actor.nombre}|">
+                            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13m-8 4v5m4-5v5"/></svg>
+                            Eliminar
+                        </a>
                     </div>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
+
+    <nav class="pagination" th:if="${paginas > 1}" aria-label="Paginación de actores">
+        <span class="count" th:text="|Página ${pagina} de ${paginas}|"></span>
+        <div class="actions">
+            <a class="button button-quiet" th:if="${pagina > 1}"
+               th:href="@{/actores(pagina=${pagina - 1},nombre=${nombre},paisNacimiento=${paisNacimiento})}">Anterior</a>
+            <a class="button button-quiet" th:if="${pagina < paginas}"
+               th:href="@{/actores(pagina=${pagina + 1},nombre=${nombre},paisNacimiento=${paisNacimiento})}">Siguiente</a>
+        </div>
+    </nav>
 
     <div class="empty" th:if="${actores.isEmpty()}">
         <h3 th:text="${filtrado ? 'No hay coincidencias' : 'El directorio está vacío'}"></h3>
