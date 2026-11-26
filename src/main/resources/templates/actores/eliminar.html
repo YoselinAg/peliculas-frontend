@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{actores/layout :: pagina('Eliminar actor', ~{::section})}">
+<section class="container narrow">
+    <a class="back" th:href="@{/actores}">Volver a actores</a>
+    <header class="page-header">
+        <h1>Eliminar actor</h1>
+        <p>Se borrará la ficha y se retirará al actor del reparto de las películas asociadas.</p>
+    </header>
+    <form class="panel editor" method="post" th:action="@{/actores/{id}/eliminar(id=${actor.id})}">
+        <div class="identity">
+            <span class="monogram" aria-hidden="true" th:text="${actor.iniciales()}"></span>
+            <div>
+                <strong th:text="${actor.nombre}"></strong>
+                <div class="muted" th:text="${actor.paisNacimiento}"></div>
+            </div>
+        </div>
+        <div class="actions editor-actions">
+            <button type="submit" class="button button-danger">Eliminar ficha</button>
+            <a class="button button-quiet" th:href="@{/actores}">Cancelar</a>
+        </div>
+    </form>
+</section>
+</html>

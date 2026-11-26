@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{actores/layout :: pagina('Actores', ~{::section})}">
+<section class="container">
+    <header class="hero">
+        <div>
+            <h1>Actores</h1>
+            <p>Busca y gestiona las fichas del reparto.</p>
+        </div>
+        <a class="button button-accent button-new-actor" th:href="@{/actores/nuevo}"><span aria-hidden="true">+</span> Nuevo actor</a>
+    </header>
+
+    <p class="notice" th:if="${aviso}" role="status" th:text="${aviso}"></p>
+
+    <form class="filters" th:action="@{/actores}" method="get" aria-label="Buscar actores">
+        <div class="field">
+            <label for="nombre">Nombre</label>
+            <input type="search" id="nombre" name="nombre" th:value="${nombre}" placeholder="Ej. Carrie Fisher">
+        </div>
+        <div class="field">
+            <label for="paisNacimiento">País de nacimiento</label>
+            <input type="search" id="paisNacimiento" name="paisNacimiento" th:value="${paisNacimiento}" placeholder="Ej. Estados Unidos">
+        </div>
+        <div class="actions">
+            <button class="button button-primary" type="submit">Buscar</button>
+            <a class="button button-quiet" th:if="${filtrado}" th:href="@{/actores}">Limpiar</a>
+        </div>
+    </form>
+
+    <div class="results-heading">
+        <h2 th:text="${filtrado ? 'Resultados de búsqueda' : 'Directorio'}">Directorio</h2>
+        <span class="count" th:text="${actores.size() == 1 ? '1 actor' : actores.size() + ' actores'}"></span>
+    </div>
+
+    <div class="table-wrap" th:unless="${actores.isEmpty()}">
+        <table aria-label="Fichas de actores">
+            <thead>
+            <tr><th scope="col">Nombre</th><th scope="col">Fecha de nacimiento</th><th scope="col">País de nacimiento</th><th scope="col">Acciones</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="actor : ${actores}">
+                <th scope="row">
+                    <span class="identity">
+                        <span class="monogram" aria-hidden="true" th:text="${actor.iniciales()}"></span>
+                        <span th:text="${actor.nombre}"></span>
+                    </span>
+                </th>
+                <td><time th:attr="datetime=${actor.fechaNacimiento}" th:text="${actor.fechaVisible()}"></time></td>
+                <td th:text="${actor.paisNacimiento}"></td>
+                <td>
+                    <div class="row-actions">
+                        <a th:href="@{/actores/{id}/editar(id=${actor.id})}" th:aria-label="|Editar a ${actor.nombre}|">Editar</a>
+                        <a class="delete-link" th:href="@{/actores/{id}/eliminar(id=${actor.id})}" th:aria-label="|Eliminar a ${actor.nombre}|">Eliminar</a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="empty" th:if="${actores.isEmpty()}">
+        <h3 th:text="${filtrado ? 'No hay coincidencias' : 'El directorio está vacío'}"></h3>
+        <p th:text="${filtrado ? 'Prueba con otro nombre o país de nacimiento.' : 'Añade la primera ficha de actor al catálogo.'}"></p>
+        <a class="button button-quiet" th:if="${filtrado}" th:href="@{/actores}">Ver todos</a>
+        <a class="button button-primary button-new-actor" th:unless="${filtrado}" th:href="@{/actores/nuevo}">Nuevo actor</a>
+    </div>
+</section>
+</html>
