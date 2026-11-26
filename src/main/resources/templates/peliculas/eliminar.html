@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: pagina('peliculas', 'Eliminar película', ~{::section})}">
+<section class="container narrow">
+    <a class="actor-editor-back" th:href="@{/peliculas}"><span aria-hidden="true">←</span> Volver a películas</a>
+    <header class="page-header">
+        <h1>Eliminar película</h1>
+        <p>Se eliminará la ficha del catálogo. Los actores del reparto seguirán en el directorio.</p>
+    </header>
+    <form class="panel editor" method="post" th:action="@{/peliculas/{id}/eliminar(id=${pelicula.id})}">
+        <div>
+            <strong th:text="${pelicula.titulo}"></strong>
+            <p class="muted" th:text="|${pelicula.anio} · ${pelicula.director}|"></p>
+        </div>
+        <div class="actions editor-actions">
+            <button type="submit" class="button button-danger">Eliminar ficha</button>
+            <a class="button button-quiet" th:href="@{/peliculas/{id}(id=${pelicula.id})}">Cancelar</a>
+        </div>
+    </form>
+</section>
+</html>

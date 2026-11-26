@@ -17,7 +17,7 @@
 * { box-sizing: border-box; }
 body { margin: 0; min-height: 100vh; }
 a { color: var(--purple); }
-button, input, select { font: inherit; }
+button, input, select, textarea { font: inherit; }
 :focus-visible { outline: 3px solid #9563dc; outline-offset: 3px; }
 .skip { position: fixed; z-index: 1; top: .5rem; left: .5rem; padding: .75rem; background: white; transform: translateY(-150%); }
 .skip:focus { transform: none; }
@@ -136,7 +136,7 @@ h2 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: normal; }
 }
 .field { display: grid; gap: .4rem; }
 .field label { font-weight: bold; font-size: .9rem; }
-.field input, .actor-editor-form .field select {
+.field input, .actor-editor-form .field select, .actor-editor-form .field textarea {
     width: 100%;
     min-width: 0;
     min-height: 2.75rem;
@@ -310,11 +310,48 @@ tbody tr:hover { background: #f7f4fb; }
     padding: clamp(1.25rem, 5vw, 2.75rem);
 }
 .actor-editor-wide { grid-column: 1 / -1; }
-.actor-editor-form .field input, .actor-editor-form .field select {
+.actor-editor-form .field input, .actor-editor-form .field select, .actor-editor-form .field textarea {
     min-height: 3.15rem;
     border-radius: .7rem;
     background: #faf7fd;
 }
+.actor-editor-form textarea { resize: vertical; }
+.movie-title { color: inherit; text-decoration: none; }
+.movie-title:hover { color: var(--purple); text-decoration: underline; }
+.movie-detail-header {
+    display: grid;
+    grid-template-columns: clamp(4rem, 18vw, 8rem) minmax(0, 1fr);
+    align-items: center;
+    gap: 1rem;
+    overflow-wrap: anywhere;
+}
+.movie-details { display: flex; flex-wrap: wrap; gap: .75rem 2rem; margin: 0; }
+.movie-details dt { color: var(--muted); font-size: .9rem; }
+.movie-details dd { margin: .2rem 0 0; font-weight: bold; }
+.movie-synopsis { margin-top: .5rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+.cast-picker {
+    min-width: 0;
+    margin: 0;
+    padding: .8rem 1rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: .7rem;
+}
+.cast-picker legend { padding-inline: .35rem; font-weight: bold; }
+.cast-options { display: grid; max-height: 13rem; overflow-y: auto; margin-top: .65rem; }
+.cast-option {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: .5rem;
+    align-items: center;
+    padding: .45rem;
+    border-radius: .4rem;
+    cursor: pointer;
+    overflow-wrap: anywhere;
+}
+.cast-option:hover, .cast-option:has(input:checked) { background: #f2ebf8; }
+.cast-option input { accent-color: var(--purple); }
+.cast-option .muted { font-size: .875rem; }
+.cast-list { margin: .5rem 0 0; padding-left: 1.25rem; }
 .actor-editor-form .field select {
     appearance: none;
     padding-right: 2rem;

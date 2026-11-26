@@ -7,7 +7,10 @@
             <h1>Películas</h1>
             <p>Explora el catálogo por título, género o actor.</p>
         </div>
+        <a class="button button-accent button-new-actor" th:href="@{/peliculas/nueva}"><span aria-hidden="true">+</span> Nueva película</a>
     </header>
+
+    <p class="notice" th:if="${aviso}" role="status" th:text="${aviso}"></p>
 
     <form class="filters movie-filters" th:action="@{/peliculas}" method="get" aria-label="Buscar películas">
         <div class="field">
@@ -40,10 +43,20 @@
                 <span th:unless="${portada}">Sin portada</span>
             </div>
             <div class="movie-info">
-                <h3 th:text="${pelicula.titulo}"></h3>
+                <h3><a class="movie-title" th:href="@{/peliculas/{id}(id=${pelicula.id})}" th:text="${pelicula.titulo}"></a></h3>
                 <p class="muted" th:text="|${pelicula.anio} · ${pelicula.duracion} min|"></p>
                 <p class="movie-director" th:text="${pelicula.director}"></p>
                 <p class="movie-genre" th:text="${pelicula.genero}"></p>
+                <div class="row-actions">
+                    <a class="row-action" th:href="@{/peliculas/{id}/editar(id=${pelicula.id})}" th:aria-label="|Editar ${pelicula.titulo}|">
+                        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m14 6 4 4M4 20l4-.8 12-12a1.4 1.4 0 0 0 0-2l-2-2a1.4 1.4 0 0 0-2 0l-12 12L4 20Z"/></svg>
+                        Editar
+                    </a>
+                    <a class="row-action row-action-delete" th:href="@{/peliculas/{id}/eliminar(id=${pelicula.id})}" th:aria-label="|Eliminar ${pelicula.titulo}|">
+                        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13m-8 4v5m4-5v5"/></svg>
+                        Eliminar
+                    </a>
+                </div>
             </div>
         </li>
     </ul>
@@ -62,6 +75,7 @@
         <h3 th:text="${filtrado ? 'No hay coincidencias' : 'El catálogo está vacío'}"></h3>
         <p th:if="${filtrado}">Prueba con otro título, género o actor.</p>
         <a class="button button-quiet" th:if="${filtrado}" th:href="@{/peliculas}">Ver todas</a>
+        <a class="button button-primary button-new-actor" th:unless="${filtrado}" th:href="@{/peliculas/nueva}">Nueva película</a>
     </div>
 </section>
 </html>

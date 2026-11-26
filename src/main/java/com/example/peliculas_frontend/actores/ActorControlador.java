@@ -1,5 +1,6 @@
 package com.example.peliculas_frontend.actores;
 
+import com.example.peliculas_frontend.Paises;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -30,7 +31,7 @@ class ActorControlador {
 
     @ModelAttribute("paisesNacimiento")
     List<String> paisesNacimiento() {
-        return PaisesNacimiento.NOMBRES;
+        return Paises.NOMBRES;
     }
 
     @GetMapping("/")
@@ -95,7 +96,7 @@ class ActorControlador {
         ActorFicha actor = cliente.consultar(id);
         model.addAttribute("actorId", id);
         model.addAttribute("actorFormulario", ActorFormulario.desde(actor));
-        if (!PaisesNacimiento.NOMBRES.contains(actor.paisNacimiento())) {
+        if (!Paises.NOMBRES.contains(actor.paisNacimiento())) {
             model.addAttribute("paisAnterior", actor.paisNacimiento());
         }
         return FORMULARIO;
@@ -120,7 +121,7 @@ class ActorControlador {
         if (validacion.hasErrors()) {
             return FORMULARIO;
         }
-        if (!PaisesNacimiento.NOMBRES.contains(datos.paisNacimiento())) {
+        if (!Paises.NOMBRES.contains(datos.paisNacimiento())) {
             validacion.rejectValue("paisNacimiento", "paisNacimiento.invalido",
                     "Selecciona un país de la lista.");
             return FORMULARIO;

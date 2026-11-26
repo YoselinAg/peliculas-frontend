@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-class ActorCliente {
+public class ActorCliente {
     private static final String ACTORES = "/api/actores";
     private static final String FICHA = ACTORES + "/{id}";
 
@@ -19,7 +19,7 @@ class ActorCliente {
         this.api = api;
     }
 
-    List<ActorFicha> listar(String nombre, String paisNacimiento) {
+    public List<ActorFicha> listar(String nombre, String paisNacimiento) {
         return api.get()
                 .uri(uri -> uri.path(ACTORES)
                         .queryParam("nombre", "{nombre}")

@@ -1,9 +1,13 @@
 package com.example.peliculas_frontend.peliculas;
 
+import com.example.peliculas_frontend.actores.ActorFicha;
+
 import java.net.URI;
+import java.util.List;
 
 public record PeliculaResumen(long id, String titulo, int anio, int duracion,
-                              String pais, String director, String genero, String portada) {
+                              String pais, String director, String genero, String portada,
+                              String sinopsis, List<ActorFicha> actores) {
 
     public String urlPortada() {
         if (portada == null || portada.isBlank()) {
