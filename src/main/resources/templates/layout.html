@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:fragment="pagina(seccion, tituloPagina, contenido)">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="|${tituloPagina} · Cineva|">Cineva</title>
+    <link rel="stylesheet" th:href="@{/css/catalogo.css}">
+</head>
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<aside class="rail">
+    <a class="brand" th:href="@{/actores}">
+        <span class="brand-mark" aria-hidden="true">CV</span>
+        <span>Cineva</span>
+    </a>
+    <nav aria-label="Catálogo">
+        <a class="nav-item" th:href="@{/peliculas}"
+           th:attr="aria-current=${seccion == 'peliculas' ? 'page' : null}">Películas</a>
+        <a class="nav-item" th:href="@{/actores}"
+           th:attr="aria-current=${seccion == 'actores' ? 'page' : null}">Actores</a>
+    </nav>
+    <small class="rail-copyright">© 2026 Yoselin Andrango</small>
+</aside>
+<main id="contenido" class="main">
+    <div class="container" th:replace="${contenido}"></div>
+</main>
+</body>
+</html>

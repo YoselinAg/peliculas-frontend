@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: pagina('actores', ${actorId != null ? 'Editar actor' : 'Nuevo actor'}, ~{::section})}">
+<section class="container narrow actor-editor">
+    <a class="actor-editor-back" th:href="@{/actores}">
+        <span aria-hidden="true">←</span>
+        Volver a actores
+    </a>
+    <div class="actor-editor-card">
+        <header class="actor-editor-header">
+            <h1 th:text="${actorId != null ? 'Editar actor' : 'Nuevo actor'}"></h1>
+            <p>Todos los campos son obligatorios.</p>
+        </header>
+        <form class="actor-editor-form" method="post" th:object="${actorFormulario}"
+              th:action="${actorId != null} ? @{/actores/{id}(id=${actorId})} : @{/actores}">
+            <p class="notice notice-error actor-editor-wide" th:if="${error}" th:text="${error}" role="alert"></p>
+
+            <div class="field actor-editor-wide">
+                <label for="nombre">Nombre completo</label>
+                <input type="text" th:field="*{nombre}" maxlength="150" required
+                       th:aria-invalid="${#fields.hasErrors('nombre')}" aria-describedby="nombre-error">
+                <div id="nombre-error"><p class="field-error" th:errors="*{nombre}"></p></div>
+            </div>
+
+            <div class="field">
+                <label for="fechaNacimiento">Fecha de nacimiento</label>
+                <input type="date" th:field="*{fechaNacimiento}" required
+                       th:aria-invalid="${#fields.hasErrors('fechaNacimiento')}" aria-describedby="fecha-error">
+                <div id="fecha-error"><p class="field-error" th:errors="*{fechaNacimiento}"></p></div>
+            </div>
+
+            <div class="field">
+                <label for="paisNacimiento">País de nacimiento</label>
+                <select th:field="*{paisNacimiento}" required
+                        th:aria-invalid="${#fields.hasErrors('paisNacimiento')}"
+                        aria-describedby="pais-anterior pais-error">
+                    <option value="">Selecciona un país</option>
+                    <option th:each="pais : ${paisesNacimiento}" th:value="${pais}" th:text="${pais}"></option>
+                </select>
+                <div id="pais-anterior"><p class="muted" th:if="${paisAnterior}"
+                    th:text="|Valor anterior: ${paisAnterior}. Selecciona un país de la lista.|"></p></div>
+                <div id="pais-error"><p class="field-error" th:errors="*{paisNacimiento}"></p></div>
+            </div>
+
+            <div class="actions actor-editor-actions actor-editor-wide">
+                <button type="submit" class="button button-primary" th:text="${actorId != null ? 'Guardar cambios' : 'Crear ficha'}"></button>
+                <a class="button button-quiet" th:href="@{/actores}">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</section>
+</html>

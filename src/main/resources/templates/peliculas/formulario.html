@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: pagina('peliculas', ${peliculaId != null ? 'Editar película' : 'Nueva película'}, ~{::section})}">
+<section class="container narrow">
+    <a class="actor-editor-back" th:href="@{/peliculas}"><span aria-hidden="true">←</span> Volver a películas</a>
+    <div class="actor-editor-card">
+        <header class="actor-editor-header">
+            <h1 th:text="${peliculaId != null ? 'Editar película' : 'Nueva película'}"></h1>
+            <p>La portada, la sinopsis y el reparto son opcionales.</p>
+        </header>
+        <form class="actor-editor-form" method="post" th:object="${peliculaFormulario}"
+              th:action="${peliculaId != null} ? @{/peliculas/{id}(id=${peliculaId})} : @{/peliculas}">
+            <p class="notice notice-error actor-editor-wide" th:if="${error}" th:text="${error}" role="alert"></p>
+
+            <div class="field actor-editor-wide">
+                <label for="titulo">Título</label>
+                <input type="text" maxlength="200" required th:field="*{titulo}"
+                       th:aria-invalid="${#fields.hasErrors('titulo')}" aria-describedby="titulo-error">
+                <div id="titulo-error"><p class="field-error" th:errors="*{titulo}"></p></div>
+            </div>
+
+            <div class="field">
+                <label for="anio">Año</label>
+                <input type="number" min="1" required th:field="*{anio}"
+                       th:aria-invalid="${#fields.hasErrors('anio')}" aria-describedby="anio-error">
+                <div id="anio-error"><p class="field-error" th:errors="*{anio}"></p></div>
+            </div>
+
+            <div class="field">
+                <label for="duracion">Duración en minutos</label>
+                <input type="number" min="1" required th:field="*{duracion}"
+                       th:aria-invalid="${#fields.hasErrors('duracion')}" aria-describedby="duracion-error">
+                <div id="duracion-error"><p class="field-error" th:errors="*{duracion}"></p></div>
+            </div>
+
+            <div class="field">
+                <label for="director">Dirección</label>
+                <input type="text" maxlength="150" required th:field="*{director}"
+                       th:aria-invalid="${#fields.hasErrors('director')}" aria-describedby="director-error">
+                <div id="director-error"><p class="field-error" th:errors="*{director}"></p></div>
+            </div>
+
+            <div class="field">
+                <label for="pais">País</label>
+                <select required th:field="*{pais}" th:aria-invalid="${#fields.hasErrors('pais')}"
+                        aria-describedby="pais-anterior pais-error">
+                    <option value="">Selecciona un país</option>
+                    <option th:each="opcion : ${paises}" th:value="${opcion}" th:text="${opcion}"></option>
+                </select>
+                <div id="pais-anterior"><p class="muted" th:if="${paisAnterior}"
+                    th:text="|Valor anterior: ${paisAnterior}. Elige un país de la lista.|"></p></div>
+                <div id="pais-error"><p class="field-error" th:errors="*{pais}"></p></div>
+            </div>
+
+            <div class="field">
+                <label for="genero">Género</label>
+                <select required th:field="*{genero}" th:aria-invalid="${#fields.hasErrors('genero')}"
+                        aria-describedby="genero-anterior genero-error">
+                    <option value="">Selecciona un género</option>
+                    <option th:each="opcion : ${generos}" th:value="${opcion}" th:text="${opcion}"></option>
+                </select>
+                <div id="genero-anterior"><p class="muted" th:if="${generoAnterior}"
+                    th:text="|Valor anterior: ${generoAnterior}. Elige un género de la lista.|"></p></div>
+                <div id="genero-error"><p class="field-error" th:errors="*{genero}"></p></div>
+            </div>
+
+            <div class="field">
+                <label for="portada">URL o ruta de la portada</label>
+                <input type="text" maxlength="500" th:field="*{portada}"
+                       th:aria-invalid="${#fields.hasErrors('portada')}" aria-describedby="portada-error">
+                <div id="portada-error"><p class="field-error" th:errors="*{portada}"></p></div>
+            </div>
+
+            <div class="field actor-editor-wide">
+                <label for="sinopsis">Sinopsis</label>
+                <textarea rows="4" th:field="*{sinopsis}"
+                       th:aria-invalid="${#fields.hasErrors('sinopsis')}" aria-describedby="sinopsis-error"></textarea>
+                <div id="sinopsis-error"><p class="field-error" th:errors="*{sinopsis}"></p></div>
+            </div>
+
+            <fieldset class="cast-picker actor-editor-wide">
+                <legend>Reparto</legend>
+                <p class="muted" th:if="${actores.isEmpty()}">Todavía no hay actores en el catálogo.</p>
+                <p class="muted" th:unless="${actores.isEmpty()}">Selecciona los actores que participan en la película.</p>
+                <div class="cast-options" th:unless="${actores.isEmpty()}">
+                    <label class="cast-option" th:each="actor : ${actores}">
+                        <input type="checkbox" th:field="*{actorIds}" th:value="${actor.id}">
+                        <span th:text="${actor.nombre}"></span>
+                        <span class="muted" th:text="${actor.fechaVisible()}"></span>
+                    </label>
+                </div>
+                <p class="field-error" th:if="${#fields.hasErrors('actorIds')}" th:errors="*{actorIds}"></p>
+            </fieldset>
+            <div class="actions actor-editor-actions actor-editor-wide">
+                <button class="button button-primary" type="submit"
+                        th:text="${peliculaId != null ? 'Guardar cambios' : 'Crear ficha'}"></button>
+                <a class="button button-quiet" th:href="@{/peliculas}">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</section>
+</html>
