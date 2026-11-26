@@ -13,6 +13,8 @@
     <p class="notice" th:if="${aviso}" role="status" th:text="${aviso}"></p>
 
     <form class="filters" th:action="@{/actores}" method="get" aria-label="Buscar actores">
+        <input type="hidden" name="orden" th:value="${orden}">
+        <input type="hidden" name="direccion" th:value="${direccion}">
         <div class="field">
             <label for="nombre">Nombre</label>
             <input type="search" id="nombre" name="nombre" th:value="${nombre}" placeholder="Ej. Carrie Fisher">
@@ -35,7 +37,21 @@
     <div class="table-wrap" th:unless="${actores.isEmpty()}">
         <table aria-label="Fichas de actores">
             <thead>
-            <tr><th scope="col">Nombre</th><th scope="col">Fecha de nacimiento</th><th scope="col">País de nacimiento</th><th scope="col">Acciones</th></tr>
+            <tr>
+                <th scope="col"
+                    th:each="columna : ${ {nombre: 'Nombre', fechaNacimiento: 'Fecha de nacimiento', paisNacimiento: 'País de nacimiento'}.entrySet() }"
+                    th:with="activa=${orden == columna.key}, siguiente=${activa and direccion == 'asc' ? 'desc' : 'asc'}"
+                    th:attr="aria-sort=${activa ? (direccion == 'asc' ? 'ascending' : 'descending') : null}">
+                    <a class="sort-link"
+                       th:href="@{/actores(nombre=${nombre},paisNacimiento=${paisNacimiento},orden=${columna.key},direccion=${siguiente})}"
+                       th:aria-label="|Ordenar por ${columna.value} en orden ${siguiente == 'asc' ? 'ascendente' : 'descendente'}|">
+                        <span th:text="${columna.value}"></span>
+                        <span class="sort-indicator" aria-hidden="true"
+                              th:text="${activa ? (direccion == 'asc' ? '↑' : '↓') : '↕'}"></span>
+                    </a>
+                </th>
+                <th scope="col" class="actions-heading">Acciones</th>
+            </tr>
             </thead>
             <tbody>
             <tr th:each="actor : ${actores}">
@@ -68,9 +84,9 @@
         <span class="count" th:text="|Página ${pagina} de ${paginas}|"></span>
         <div class="actions">
             <a class="button button-quiet" th:if="${pagina > 1}"
-               th:href="@{/actores(pagina=${pagina - 1},nombre=${nombre},paisNacimiento=${paisNacimiento})}">Anterior</a>
+               th:href="@{/actores(pagina=${pagina - 1},nombre=${nombre},paisNacimiento=${paisNacimiento},orden=${orden},direccion=${direccion})}">Anterior</a>
             <a class="button button-quiet" th:if="${pagina < paginas}"
-               th:href="@{/actores(pagina=${pagina + 1},nombre=${nombre},paisNacimiento=${paisNacimiento})}">Siguiente</a>
+               th:href="@{/actores(pagina=${pagina + 1},nombre=${nombre},paisNacimiento=${paisNacimiento},orden=${orden},direccion=${direccion})}">Siguiente</a>
         </div>
     </nav>
 

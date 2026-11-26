@@ -11,7 +11,10 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.text.Collator;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 class ActorControlador {
@@ -39,6 +42,8 @@ class ActorControlador {
     String listar(@RequestParam(name = "nombre", defaultValue = "") String nombre,
                   @RequestParam(name = "paisNacimiento", defaultValue = "") String paisNacimiento,
                   @RequestParam(name = "pagina", defaultValue = "1") int pagina,
+                  @RequestParam(name = "orden", defaultValue = "") String orden,
+                  @RequestParam(name = "direccion", defaultValue = "asc") String direccion,
                   Model model) {
         nombre = nombre.strip();
         paisNacimiento = paisNacimiento.strip();
@@ -46,6 +51,16 @@ class ActorControlador {
         model.addAttribute("paisNacimiento", paisNacimiento);
         model.addAttribute("filtrado", !nombre.isEmpty() || !paisNacimiento.isEmpty());
         List<ActorFicha> actores = cliente.listar(nombre, paisNacimiento);
+        Comparator<ActorFicha> comparador = comparadorDeActores(orden);
+        boolean descendente = "desc".equals(direccion);
+        if (comparador != null) {
+            if (descendente) {
+                comparador = comparador.reversed();
+            }
+            actores = actores.stream().sorted(comparador.thenComparingLong(ActorFicha::id)).toList();
+        }
+        model.addAttribute("orden", comparador == null ? "" : orden);
+        model.addAttribute("direccion", descendente ? "desc" : "asc");
         int total = actores.size();
         int paginas = total == 0 ? 1 : (total - 1) / ACTORES_POR_PAGINA + 1;
         int actual = Math.max(1, Math.min(pagina, paginas));
@@ -56,6 +71,17 @@ class ActorControlador {
         model.addAttribute("pagina", actual);
         model.addAttribute("paginas", paginas);
         return "actores/listado";
+    }
+
+    private Comparator<ActorFicha> comparadorDeActores(String orden) {
+        Collator alfabetico = Collator.getInstance(Locale.forLanguageTag("es"));
+        alfabetico.setStrength(Collator.SECONDARY);
+        return switch (orden) {
+            case "nombre" -> Comparator.comparing(ActorFicha::nombre, alfabetico);
+            case "fechaNacimiento" -> Comparator.comparing(ActorFicha::fechaNacimiento);
+            case "paisNacimiento" -> Comparator.comparing(ActorFicha::paisNacimiento, alfabetico);
+            default -> null;
+        };
     }
 
     @GetMapping("/actores/nuevo")

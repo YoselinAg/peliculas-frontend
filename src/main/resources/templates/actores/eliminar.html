@@ -2,7 +2,10 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{actores/layout :: pagina('Eliminar actor', ~{::section})}">
 <section class="container narrow">
-    <a class="back" th:href="@{/actores}">Volver a actores</a>
+    <a class="actor-editor-back" th:href="@{/actores}">
+        <span aria-hidden="true">←</span>
+        Volver a actores
+    </a>
     <header class="page-header">
         <h1>Eliminar actor</h1>
         <p>Se borrará la ficha y se retirará al actor del reparto de las películas asociadas.</p>
