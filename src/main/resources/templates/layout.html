@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" th:fragment="pagina(titulo, contenido)">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:fragment="pagina(seccion, tituloPagina, contenido)">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title th:text="|${titulo} · Cineva|">Cineva</title>
+    <title th:text="|${tituloPagina} · Cineva|">Cineva</title>
     <link rel="stylesheet" th:href="@{/css/catalogo.css}">
 </head>
 <body>
@@ -14,7 +14,10 @@
         <span>Cineva</span>
     </a>
     <nav aria-label="Catálogo">
-        <a class="nav-item" th:href="@{/actores}">Actores</a>
+        <a class="nav-item" th:href="@{/peliculas}"
+           th:attr="aria-current=${seccion == 'peliculas' ? 'page' : null}">Películas</a>
+        <a class="nav-item" th:href="@{/actores}"
+           th:attr="aria-current=${seccion == 'actores' ? 'page' : null}">Actores</a>
     </nav>
 </aside>
 <main id="contenido" class="main">

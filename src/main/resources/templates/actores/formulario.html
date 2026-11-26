@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{actores/layout :: pagina(${actorId != null ? 'Editar actor' : 'Nuevo actor'}, ~{::section})}">
+      th:replace="~{layout :: pagina('actores', ${actorId != null ? 'Editar actor' : 'Nuevo actor'}, ~{::section})}">
 <section class="container narrow actor-editor">
     <a class="actor-editor-back" th:href="@{/actores}">
         <span aria-hidden="true">←</span>

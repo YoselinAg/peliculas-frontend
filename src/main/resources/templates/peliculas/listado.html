@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: pagina('peliculas', 'Películas', ~{::section})}">
+<section class="container">
+    <header class="hero">
+        <div>
+            <h1>Películas</h1>
+            <p>Explora el catálogo por título, género o actor.</p>
+        </div>
+    </header>
+
+    <form class="filters movie-filters" th:action="@{/peliculas}" method="get" aria-label="Buscar películas">
+        <div class="field">
+            <label for="titulo">Título</label>
+            <input type="search" id="titulo" name="titulo" th:value="${titulo}" placeholder="Ej. Una nueva esperanza">
+        </div>
+        <div class="field">
+            <label for="genero">Género</label>
+            <input type="search" id="genero" name="genero" th:value="${genero}" placeholder="Ej. Ciencia ficción">
+        </div>
+        <div class="field">
+            <label for="actor">Actor</label>
+            <input type="search" id="actor" name="actor" th:value="${actor}" placeholder="Ej. Carrie Fisher">
+        </div>
+        <div class="actions">
+            <button class="button button-primary" type="submit">Buscar</button>
+            <a class="button button-quiet" th:if="${filtrado}" th:href="@{/peliculas}">Limpiar</a>
+        </div>
+    </form>
+
+    <div class="results-heading">
+        <h2 th:text="${filtrado ? 'Resultados de búsqueda' : 'Catálogo'}">Catálogo</h2>
+        <span class="count" th:text="${totalPeliculas == 1 ? '1 película' : totalPeliculas + ' películas'}"></span>
+    </div>
+
+    <ul class="movie-grid" role="list" th:unless="${peliculas.isEmpty()}">
+        <li class="movie-card" th:each="pelicula : ${peliculas}" th:with="portada=${pelicula.urlPortada()}">
+            <div class="movie-poster">
+                <img th:if="${portada}" th:src="${portada}" alt="" loading="lazy" referrerpolicy="no-referrer">
+                <span th:unless="${portada}">Sin portada</span>
+            </div>
+            <div class="movie-info">
+                <h3 th:text="${pelicula.titulo}"></h3>
+                <p class="muted" th:text="|${pelicula.anio} · ${pelicula.duracion} min|"></p>
+                <p class="movie-director" th:text="${pelicula.director}"></p>
+                <p class="movie-genre" th:text="${pelicula.genero}"></p>
+            </div>
+        </li>
+    </ul>
+
+    <nav class="pagination" th:if="${paginas > 1}" aria-label="Paginación de películas">
+        <span class="count" th:text="|Página ${pagina} de ${paginas}|"></span>
+        <div class="actions">
+            <a class="button button-quiet" th:if="${pagina > 1}"
+               th:href="@{/peliculas(pagina=${pagina - 1},titulo=${titulo},genero=${genero},actor=${actor})}">Anterior</a>
+            <a class="button button-quiet" th:if="${pagina < paginas}"
+               th:href="@{/peliculas(pagina=${pagina + 1},titulo=${titulo},genero=${genero},actor=${actor})}">Siguiente</a>
+        </div>
+    </nav>
+
+    <div class="empty" th:if="${peliculas.isEmpty()}">
+        <h3 th:text="${filtrado ? 'No hay coincidencias' : 'El catálogo está vacío'}"></h3>
+        <p th:if="${filtrado}">Prueba con otro título, género o actor.</p>
+        <a class="button button-quiet" th:if="${filtrado}" th:href="@{/peliculas}">Ver todas</a>
+    </div>
+</section>
+</html>

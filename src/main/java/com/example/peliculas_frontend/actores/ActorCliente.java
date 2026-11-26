@@ -1,13 +1,10 @@
 package com.example.peliculas_frontend.actores;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
@@ -18,11 +15,8 @@ class ActorCliente {
 
     private final RestClient api;
 
-    ActorCliente(@Value("${catalogo.api.url}") String url) {
-        var conexiones = new SimpleClientHttpRequestFactory();
-        conexiones.setConnectTimeout(Duration.ofSeconds(3));
-        conexiones.setReadTimeout(Duration.ofSeconds(5));
-        api = RestClient.builder().baseUrl(url).requestFactory(conexiones).build();
+    ActorCliente(RestClient api) {
+        this.api = api;
     }
 
     List<ActorFicha> listar(String nombre, String paisNacimiento) {

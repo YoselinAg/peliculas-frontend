@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{actores/layout :: pagina('Eliminar actor', ~{::section})}">
+      th:replace="~{layout :: pagina('actores', 'Eliminar actor', ~{::section})}">
 <section class="container narrow">
     <a class="actor-editor-back" th:href="@{/actores}">
         <span aria-hidden="true">←</span>

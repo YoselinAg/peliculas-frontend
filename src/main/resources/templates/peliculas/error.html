@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: pagina('peliculas', 'Catálogo no disponible', ~{::section})}">
+<section class="container narrow">
+    <header class="page-header">
+        <h1>Catálogo no disponible</h1>
+        <p>No se pudo cargar el listado de películas. Vuelve a intentarlo en unos instantes.</p>
+    </header>
+    <a class="button button-primary" th:href="@{/peliculas}">Reintentar</a>
+</section>
+</html>
