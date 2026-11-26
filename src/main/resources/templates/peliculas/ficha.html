@@ -19,15 +19,18 @@
                 <div><dt>Dirección</dt><dd th:text="${pelicula.director}"></dd></div>
                 <div><dt>País</dt><dd th:text="${pelicula.pais}"></dd></div>
             </dl>
-            <div th:unless="${#strings.isEmpty(pelicula.sinopsis)}">
+            <div class="movie-story" th:unless="${#strings.isEmpty(pelicula.sinopsis)}">
                 <h2>Sinopsis</h2>
                 <p class="movie-synopsis" th:text="${pelicula.sinopsis}"></p>
             </div>
-            <div>
+            <div class="movie-cast">
                 <h2>Reparto</h2>
                 <p class="muted" th:if="${pelicula.actores.isEmpty()}">Sin actores asociados.</p>
-                <ul th:unless="${pelicula.actores.isEmpty()}" class="cast-list">
-                    <li th:each="actor : ${pelicula.actores}" th:text="${actor.nombre}"></li>
+                <ul th:unless="${pelicula.actores.isEmpty()}" class="cast-list" role="list">
+                    <li th:each="actor : ${pelicula.actores}">
+                        <span class="monogram" aria-hidden="true" th:text="${actor.iniciales()}"></span>
+                        <span th:text="${actor.nombre}"></span>
+                    </li>
                 </ul>
             </div>
             <div class="actions editor-actions">

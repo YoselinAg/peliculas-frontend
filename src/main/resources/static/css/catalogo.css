@@ -334,10 +334,31 @@ tbody tr:hover { background: #f7f4fb; }
     gap: 1rem;
     overflow-wrap: anywhere;
 }
-.movie-details { display: flex; flex-wrap: wrap; gap: .75rem 2rem; margin: 0; }
-.movie-details dt { color: var(--muted); font-size: .9rem; }
-.movie-details dd { margin: .2rem 0 0; font-weight: bold; }
-.movie-synopsis { margin-top: .5rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+.movie-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+    gap: .65rem;
+    margin: 0;
+}
+.movie-details > div {
+    padding: .85rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: .65rem;
+    background: #faf7fd;
+    overflow-wrap: anywhere;
+}
+.movie-details dt { color: var(--purple); font-size: .875rem; }
+.movie-details dd { margin: .25rem 0 0; font-weight: bold; }
+.movie-story {
+    padding: 1rem 1.15rem;
+    border-inline-start: 3px solid #b49ace;
+    border-radius: .25rem .75rem .75rem .25rem;
+    background: #f5effa;
+}
+.movie-story h2, .movie-cast h2 { font-size: 1.4rem; }
+.movie-synopsis { margin-top: .55rem; line-height: 1.65; white-space: pre-wrap; overflow-wrap: anywhere; }
+.movie-cast { padding-block: .25rem; }
+.movie-cast > p { margin-top: .6rem; }
 .cast-picker {
     min-width: 0;
     margin: 0;
@@ -360,7 +381,26 @@ tbody tr:hover { background: #f7f4fb; }
 .cast-option:hover, .cast-option:has(input:checked) { background: #f2ebf8; }
 .cast-option input { accent-color: var(--purple); }
 .cast-option .muted { font-size: .875rem; }
-.cast-list { margin: .5rem 0 0; padding-left: 1.25rem; }
+.cast-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin: .65rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+.cast-list li {
+    display: flex;
+    align-items: center;
+    gap: .45rem;
+    max-width: 100%;
+    padding: .25rem .65rem .25rem .25rem;
+    border: 1px solid var(--line);
+    border-radius: 2rem;
+    font-size: .9rem;
+    overflow-wrap: anywhere;
+}
+.cast-list .monogram { width: 1.85rem; height: 1.85rem; border-radius: 50%; font-size: .75rem; }
 .actor-editor-form .field select {
     appearance: none;
     padding-right: 2rem;
